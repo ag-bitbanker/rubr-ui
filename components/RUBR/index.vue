@@ -61,7 +61,7 @@ const connect = () => {
         <Amount :disabled="!contract || totalSupplyLoading" symbol="RUBR" :value="totalSupply" label="Total supply"
           :decimals="8" @update="updateTotalSupply" :loading="totalSupplyLoading" />
         <Metadata />
-        <Card class="card shadow-none">
+        <Card class="card-2" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
           <template #title>
             <div class="text-green-700 dark:text-green-500 text-sm pb-2">ERC20 Read Operations</div>
           </template>
@@ -72,7 +72,7 @@ const connect = () => {
             </div>
           </template>
         </Card>
-        <Card class="card shadow-none">
+        <Card class="card-2" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
           <template #title>
             <div class="flex justify-between items-center gap-2 pb-4 pt-3">
                <OverlayBadge :value="badgeERC20WriteValue" :severity="badgeERC20WriteSeverity" size="small" :class="badgeERC20WriteClass" @click="connect">

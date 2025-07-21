@@ -37,37 +37,23 @@ const execute = async () => {
 const { disabled = false } = defineProps(['disabled'])
 </script>
 <template>
-  <Card
-    class="rounded-2xl mx-auto border border-surface-200 dark:border-surface-700 w-full shadow-none"
-  >
+  <Card class="card-2" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
     <template #title>
-      <div class="flex justify-between items-center gap-2 text-sm">
-        <span>Redeem</span>
+      <div class="text-sm">
+        Redeem
       </div>
     </template>
     <template #content>
       <div class="flex flex-col gap-2 text-sm">
-        
-          <InputAmount
-            symbol="RUBR"
-            label="Amount"
-            v-model="amount"
-            :decimals="8"
-            :disabled="!contract || running || disabled"
-            :invalid="invalidAmount"
-          />
 
-       
+        <InputAmount symbol="RUBR" label="Amount" v-model="amount" :decimals="8"
+          :disabled="!contract || running || disabled" :invalid="invalidAmount" />
+
+
         <div class="flex justify-normal gap-x-4 gap-y-2 pt-2">
-          <DangerButton
-            class="min-w-32"
-            icon="pi pi-play"
-            label="Execute"
-             :disabled="!contract || running || disabled"
-            :loading="running"
-            @click="execute"
-          />
-         
+          <DangerButton class="min-w-32" icon="pi pi-play" label="Execute" :disabled="!contract || running || disabled"
+            :loading="running" @click="execute" />
+
           <TransactionResult :value="txResult" />
         </div>
       </div>

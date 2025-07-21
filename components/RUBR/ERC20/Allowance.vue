@@ -14,8 +14,8 @@ import { useRubrStore } from "@/stores/RUBR";
 const web3Store = useWeb3Store();
 const rubrStore = useRubrStore();
 const { isValidAddress } = web3Store;
-const {allowance} = rubrStore
-const {contract} = storeToRefs(rubrStore)
+const { allowance } = rubrStore
+const { contract } = storeToRefs(rubrStore)
 const owner = ref()
 const spender = ref()
 const amount = ref()
@@ -23,12 +23,12 @@ const loading = ref(false)
 const isValid = computed(() => isValidAddress(owner) && isValidAddress(spender))
 
 const update = async () => {
-    
-    if (unref(contract) ) {
+
+    if (unref(contract)) {
         try {
             loading.value = true;
             await nextTick();
-            amount.value = await allowance(unref(owner),unref(spender))
+            amount.value = await allowance(unref(owner), unref(spender))
         } finally {
             loading.value = false;
         }
@@ -37,22 +37,22 @@ const update = async () => {
 </script>
 
 <template>
-         <Card class="card shadow-none">
-            <template #title>
-                <div class="flex justify-between items-center gap-2 text-sm">
-                    <span>Allowance</span>
-                </div>
-            </template>
-            <template #content>
-                <div class="flex flex-col gap-2 text-sm">
-                    <InputAddress :disabled="!contract || loading" v-model="owner" label="Owner" />
-                    <InputAddress :disabled="!contract || loading" v-model="spender" label="Spender" />
-                    <QueryAmount class="lg:col-span-2 xl:col-span-1" symbol="RUBR" label="Amount" :value="amount" :disabled="!isValid"
-                        :loading="loading" @query="update" :decimals="8" />
-                </div>
-            </template>
-        </Card>
-   
+    <Card class="card-2" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
+        <template #title>
+            <div class="text-sm">
+                Allowance
+            </div>
+        </template>
+        <template #content>
+            <div class="flex flex-col gap-2 text-sm">
+                <InputAddress :disabled="!contract || loading" v-model="owner" label="Owner" />
+                <InputAddress :disabled="!contract || loading" v-model="spender" label="Spender" />
+                <QueryAmount class="lg:col-span-2 xl:col-span-1" symbol="RUBR" label="Amount" :value="amount"
+                    :disabled="!isValid" :loading="loading" @query="update" :decimals="8" />
+            </div>
+        </template>
+    </Card>
+
 
 
 </template>

@@ -104,7 +104,7 @@ const disabled = computed(() => !unref(account)?.connected || !unref(account)?.r
 
 </script>
 <template>
-  <Card class="card shadow-none">
+  <Card class="card-2" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
     
      <template #title>
       <div class="flex justify-between items-center gap-2 pb-4 pt-2">

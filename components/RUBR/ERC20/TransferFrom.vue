@@ -51,11 +51,9 @@ const execute = async () => {
 const { disabled = false } = defineProps(['disabled'])
 </script>
 <template>
-  <Card class="card shadow-none">
+  <Card class="card-2" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
     <template #title>
-
-      <span class="text-sm">Transfer From</span>
-
+      <div class="text-sm">Transfer From</div>
     </template>
     <template #content>
       <div class="flex flex-col  gap-2 text-sm">

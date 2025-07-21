@@ -10,8 +10,9 @@ import { createAppKit } from "@reown/appkit/vue";
 import { EthersAdapter } from "@reown/appkit-adapter-ethers";
 import { bscTestnet, bsc } from "@reown/appkit/networks";
 import { isAddress, BrowserProvider, JsonRpcProvider } from "ethers";
-
 import type { ContractRunner } from "ethers";
+const config = useRuntimeConfig()
+
 
 export type UsefullAddresses = {
   RUBR: string;
@@ -41,12 +42,12 @@ export type Network = {
   blockExplorer?: string;
 };
 
-const projectId = "16ad44652fb08a15a5641b277dce355c";
+const projectId = config.public.projectId;
 
 const metadata = {
   name: "RUBR",
   description: "RUBR Service Coin",
-  url: "http://localhost:3000", // origin must match your domain & subdomain
+  url: "https://rubr.tokenify.it", // origin must match your domain & subdomain
   icons: ["https://assets.reown.com/reown-profile-pic.png"],
 };
 
@@ -139,7 +140,7 @@ export const useWeb3Store = defineStore("web3Store", () => {
     const { open } = useAppKit();
     open({ view: "Connect" });
   };
-  
+
   const ready = async () => await appKit.ready();
 
   init().then(() => {

@@ -44,15 +44,12 @@ const execute = async () => {
 const { disabled = false } = defineProps(['disabled'])
 </script>
 <template>
-  <Card class="card shadow-none">
+  <Card class="card-2" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
     <template #title>
-
-      <span class="text-sm">Increase Approval</span>
-
+      <div class="text-sm">Increase Approval</div>
     </template>
     <template #content>
       <div class="flex flex-col gap-2 text-sm">
-
         <InputAddress :disabled="!contract || running || disabled" v-model="address" label="Spender (address)"
           :invalid="invalidAddress" />
         <InputAmount symbol="RUBR" label="Added amount" v-model="amount" :decimals="8"

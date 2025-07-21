@@ -73,3 +73,6 @@
 .card {
     @apply rounded-2xl border border-surface-200 dark:border-surface-700 w-full;
 }
+.card-2 {
+    @apply border-t border-b-0 border-l-0 border-r-0 rounded-none md:rounded-2xl md:border-b-1 md:border-r-1  md:border-l-1 border-surface-200 dark:border-surface-700 w-full shadow-none;
+}

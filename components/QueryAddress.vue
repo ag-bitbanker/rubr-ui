@@ -11,7 +11,9 @@ const web3AccountStore = useWeb3AccountStore();
 const { account } = storeToRefs(web3AccountStore)
 const { copy } = useClipboard()
 const web3Store = useWeb3Store();
-const { explorerUrl, addresses } = web3Store;
+const { explorerUrl } = web3Store;
+
+const { addresses } = storeToRefs(web3Store)
 const { label, disabled, invalid = false, loading = false } = defineProps(['label', 'disabled', 'invalid', 'loading'])
 
 const model = defineModel()
@@ -36,16 +38,18 @@ const emit = defineEmits(['query'])
                     :disabled="disabled" />
             </div>
             <span
-                class="flex items-center justify-center border-y border-e border-surface-300 dark:border-surface-700 overflow-hidden">
+                class="flex items-center justify-center border-y border-e border-surface-300 dark:border-surface-700">
                 <SecondaryButton icon="pi pi-copy" variant="text" pt:root="rounded-none" :disabled="!model"
                     @click="copy(model)" />
             </span>
             <span
-                class="flex items-center justify-center border-y border-e border-surface-300 dark:border-surface-700 rounded-e-md overflow-hidden">
+                class="flex items-center justify-center border-y border-e border-surface-300 dark:border-surface-700">
                 <SecondaryButton icon="pi pi-external-link" variant="text" :disabled="!url" pt:root="rounded-none"
                     :href="url" target="_blank" rel="noopener" as="a" />
             </span>
-            <Button icon="pi pi-search" class="min-w-32 ml-2" label="Query" @click="emit('query')" :loading="loading" />
+           <span   class="flex items-center justify-center border-y border-e border-surface-300 dark:border-surface-700 rounded-e-md">
+              <Button icon="pi pi-search" variant="text" class="md:min-w-32" pt:root="rounded-none" label="Query" @click="emit('query')" :loading="loading" />
+            </span>
         </div>
         <Message v-if="invalid" size="small" severity="error" variant="simple">Invalid address</Message>
     </div>

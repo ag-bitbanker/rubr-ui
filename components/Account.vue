@@ -82,7 +82,7 @@ const connect = () => {
                         label="Balance, RUBR" :decimals="8" @update="updateAccountBalanceRUBR"
                         :loading="accountBalanceRUBRLoading" />
                 </div>
-                <Card class="card shadow-none" v-if="account.roles">
+                <Card class="card-2" v-if="account.roles" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
                     <template #title>
                         <div class="flex items-center justify-between gap-4 text-sm">
                             <span>RUBR roles</span>

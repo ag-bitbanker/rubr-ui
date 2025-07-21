@@ -12,8 +12,8 @@ import { useWeb3AccountStore } from "@/stores/web3Account";
 const web3Store = useWeb3Store()
 const web3AccountStore = useWeb3AccountStore()
 const rubrStore = useRubrStore();
-const {account } = storeToRefs(web3AccountStore);
-const {openConnectModal} = web3Store;
+const { account } = storeToRefs(web3AccountStore);
+const { openConnectModal } = web3Store;
 const { contract, paused, pausedLoading } = storeToRefs(rubrStore);
 const { updatePaused, pause, unpause } = rubrStore;
 const txResult = ref();
@@ -26,7 +26,7 @@ const pauseProtocol = async () => {
       pauseRunning.value = true;
       await nextTick();
       txResult.value = await pause();
-    } finally { 
+    } finally {
       pauseRunning.value = false;
     }
   }
@@ -46,32 +46,33 @@ const unpauseProtocol = async () => {
 const state = computed(() => unref(paused) ? 'Paused' : 'Running')
 const options = ref(['Running', 'Paused']);
 const accountBadgeValue = computed(() =>
-    unref(account)?.connected ?  (unref(account)?.roles?.pauser ? "Role granted"  : "Forbidden") : "Connect wallet"
+  unref(account)?.connected ? (unref(account)?.roles?.pauser ? "Role granted" : "Forbidden") : "Connect wallet"
 );
 const accountBadgeSeverity = computed(() =>
-    unref(account)?.connected && unref(account)?.roles?.pauser ? "success" : "warn"
+  unref(account)?.connected && unref(account)?.roles?.pauser ? "success" : "warn"
 );
 const accountBadgeClass = computed(() =>
-    unref(account)?.connected ? 'translate-y-[-75%] whitespace-nowrap' : 'cursor-pointer translate-y-[-75%] whitespace-nowrap'
+  unref(account)?.connected ? 'translate-y-[-75%] whitespace-nowrap' : 'cursor-pointer translate-y-[-75%] whitespace-nowrap'
 );
 const connect = () => {
-   if ( !unref(account).connected) {
+  if (!unref(account).connected) {
     openConnectModal()
-   }
+  }
 }
-const disabled = computed(()=>!unref(account)?.connected || !unref(account)?.roles?.pauser)
+const disabled = computed(() => !unref(account)?.connected || !unref(account)?.roles?.pauser)
 
 </script>
 <template>
-  <Card class="rounded-2xl mx-auto border border-surface-200 dark:border-surface-700 w-full shadow-none">
+  <Card class="card-2" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
     <template #title>
       <div class="flex justify-between items-center gap-2 pb-4 pt-2">
-                <OverlayBadge :value="accountBadgeValue"  @click="connect" :severity="accountBadgeSeverity" size="small" :class="accountBadgeClass">
-                    Protocol pauser</OverlayBadge>
-               <SecondaryButton icon="pi pi-refresh" size="small" :loading="pausedLoading" @click="updatePaused"
+        <OverlayBadge :value="accountBadgeValue" @click="connect" :severity="accountBadgeSeverity" size="small"
+          :class="accountBadgeClass">
+          Protocol pauser</OverlayBadge>
+        <SecondaryButton icon="pi pi-refresh" size="small" :loading="pausedLoading" @click="updatePaused"
           label="Refresh" rounded />
-            </div>
-      
+      </div>
+
     </template>
     <template #content>
       <div class="flex flex-col gap-y-1">
@@ -79,15 +80,15 @@ const disabled = computed(()=>!unref(account)?.connected || !unref(account)?.rol
         <div class="flex flex-col md:flex-row text-sm gap-y-2 gap-x-4 items-start md:items-center justify-items-start">
           <SelectButton v-model="state" :options="options" disabled />
           <div v-if="!paused" class="flex grow justify-normal gap-x-4 gap-y-2 text-sm">
-            <DangerButton class="min-w-32" icon="pi pi-pause-circle" label="Pause" :loading="pauseRunning"  :disabled="disabled"
-              @click="pauseProtocol" />
+            <DangerButton class="min-w-32" icon="pi pi-pause-circle" label="Pause" :loading="pauseRunning"
+              :disabled="disabled" @click="pauseProtocol" />
           </div>
           <div v-else class="flex justify-normal gap-x-4 gap-y-2 text-sm">
             <Button class="min-w-32" icon="pi pi-play-circle" label="Resume" :loading="unpauseRunning"
-              @click="unpauseProtocol" :disabled="disabled"/>
-           
+              @click="unpauseProtocol" :disabled="disabled" />
+
           </div>
-           <TransactionResult :value="txResult" />
+          <TransactionResult :value="txResult" />
         </div>
 
       </div>

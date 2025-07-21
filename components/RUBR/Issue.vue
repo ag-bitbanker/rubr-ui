@@ -45,10 +45,10 @@ const execute = async () => {
 const { disabled = false } = defineProps(['disabled'])
 </script>
 <template>
-  <Card class="card shadow-none">
+  <Card class="card-2" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
     <template #title>
-      <div class="flex justify-between items-center gap-2 text-sm">
-        <span>Issue </span>
+      <div class="text-sm">
+        Issue
       </div>
     </template>
     <template #content>

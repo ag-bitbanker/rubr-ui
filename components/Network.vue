@@ -40,7 +40,7 @@ const badgeSeverity = computed(() => unref(network)?.testnet ? 'success' : 'warn
             <InputText readonly :value="network.currency?.decimals" aria-describedby="decimals" />
           </div>
         </div>
-        <Card class="card shadow-none">
+        <Card class="card-2" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
           <template #title><div class="text-sm pb-2">Well known addresses</div></template>
           <template #content>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
