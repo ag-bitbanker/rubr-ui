@@ -1,33 +1,73 @@
 <script setup>
 import Card from "@/volt/Card.vue";
 import Badge from "@/volt/Badge.vue";
-import Button from "@/volt/Button.vue";
+import OverlayBadge from "@/volt/OverlayBadge.vue";
 import SecondaryButton from "@/volt/SecondaryButton.vue";
-import Checkbox from "@/volt/Checkbox.vue";
 import Address from "@/components/Address.vue";
 import Amount from "~/components/Amount.vue";
+import DataTable from "@/volt/DataTable.vue";
+import Column from "primevue/column";
 import { useWeb3Store } from "@/stores/web3";
-const { network } = storeToRefs(useWeb3Store());
 import { useWeb3AccountStore } from "@/stores/web3Account";
+const web3Store = useWeb3Store()
+const { network } = storeToRefs(web3Store);
+const {openConnectModal} = web3Store;
 const web3AccountStore = useWeb3AccountStore();
-const { account, accountLoading, accountBalanceLoading, accountBalanceRUBRLoading, accountRolesLoading } = storeToRefs(web3AccountStore)
-const { updateAccountBalance,
+const {
+    account,
+    accountLoading,
+    accountBalanceLoading,
+    accountBalanceRUBRLoading,
+    accountRolesLoading,
+} = storeToRefs(web3AccountStore);
+const {
+    updateAccountBalance,
     updateAccountBalanceRUBR,
     updateAccountRoles,
-    updateAccount } = web3AccountStore
+    updateAccount,
+} = web3AccountStore;
+
+const accountBadgeValue = computed(() =>
+    unref(account)?.connected ? "Connected" : "Connect wallet"
+);
+const accountBadgeSeverity = computed(() =>
+    unref(account)?.connected ? "success" : "warn"
+);
+const accountBadgeClass = computed(() =>
+    unref(account)?.connected ? 'translate-y-[-75%] whitespace-nowrap' : 'cursor-pointer translate-y-[-75%] whitespace-nowrap'
+);
+
+const roles = computed(() => ([
+    { name: 'Admin role', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.admin },
+    { name: 'Pauser role', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.pauser },
+    { name: 'Supplier role', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.supplier },
+    { name: 'Compliance role', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.compliance },
+])
+)
+const roleBadgeSeverity = (roleGranted) => {
+    if (roleGranted === true) return 'success';
+    if (roleGranted === false) return 'danger';
+    return 'secondary'
+}
+const roleBadgeLabel = (roleGranted) => {
+    if (roleGranted === true) return 'Granted';
+    if (roleGranted === false) return 'Not granted';
+    return 'Unknown'
+}
+const connect = () => {
+   if ( !unref(account).connected) {
+    openConnectModal()
+   }
+}
 </script>
 <template>
-    <Card class="rounded-2xl max-w-7xl mx-auto border border-surface-200 dark:border-surface-700 w-full">
+    <Card class="card">
         <template #title>
-            <div class="flex justify-between items-center gap-2 pb-4">
-                <span>Account</span>
-                <div class="flex items-center gap-2">
-
-                    <SecondaryButton icon="pi pi-refresh" size="small" @click="updateAccount" label="Refresh"
-                        :loading="accountLoading" rounded />
-                    <Badge value="Connected" severity="success" v-if="account?.connected" />
-                    <Badge value="Not connected" severity="warn" v-else />
-                </div>
+            <div class="flex justify-between items-center gap-2 pb-4 pt-2">
+                <OverlayBadge :value="accountBadgeValue"  @click="connect" :severity="accountBadgeSeverity" size="small" :class="accountBadgeClass">
+                    Account</OverlayBadge>
+                <SecondaryButton icon="pi pi-refresh" size="small" @click="updateAccount" label="Refresh"
+                    :loading="accountLoading" :disabled="!account?.connected" rounded />
             </div>
         </template>
 
@@ -42,39 +82,29 @@ const { updateAccountBalance,
                         label="Balance, RUBR" :decimals="8" @update="updateAccountBalanceRUBR"
                         :loading="accountBalanceRUBRLoading" />
                 </div>
-                <Card class="rounded-2xl mx-auto border border-surface-200 dark:border-surface-700 w-full shadow-none"> v-if="account.roles">
-                     <template #title><div class="flex items-center justify-between gap-4 text-sm">
-                        <span>Granted RUBR roles</span>
-                        <SecondaryButton icon="pi pi-refresh" size="small" @click="updateAccountRoles"
-                            :loading="accountRolesLoading" label="Refresh roles" rounded />
-
-                    </div>
+                <Card class="card shadow-none" v-if="account.roles">
+                    <template #title>
+                        <div class="flex items-center justify-between gap-4 text-sm">
+                            <span>RUBR roles</span>
+                            <SecondaryButton icon="pi pi-refresh" size="small" @click="updateAccountRoles"
+                                :loading="accountRolesLoading" label="Refresh" rounded />
+                        </div>
                     </template>
                     <template #content>
-                    <div class="flex flex-wrap gap-4 text-sm">
-                        <div class="flex items-center gap-2">
-                            <Checkbox v-model="account.roles.admin" binary readonly :disabled="accountRolesLoading" />
-                            <label class="whitespace-nowrap">Admin role</label>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <Checkbox v-model="account.roles.pauser" binary readonly :disabled="accountRolesLoading" />
-                            <label class="whitespace-nowrap">Pauser role</label>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <Checkbox v-model="account.roles.supplier" binary readonly
-                                :disabled="accountRolesLoading" />
-                            <label class="whitespace-nowrap">Supplier role</label>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <Checkbox v-model="account.roles.compliance" binary readonly
-                                :disabled="accountRolesLoading" />
-                            <label class="whitespace-nowrap">Compliance role</label>
-                        </div>
-                    </div>
+                        <DataTable :value="roles">
+                            <Column field="name" header="Role"></Column>
+                            <Column field="status" header="Status">
+                                <template #body="slotProps">
+                                    <Badge :value="roleBadgeLabel(slotProps.data.status)"
+                                        :severity="roleBadgeSeverity(slotProps.data.status)" class="whitespace-nowrap" />
+
+                                </template>
+                            </Column>
+
+                        </DataTable>
                     </template>
                 </Card>
             </div>
         </template>
-
     </Card>
 </template>

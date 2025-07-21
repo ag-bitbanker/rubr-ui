@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import {
+  useAppKit,
   useAppKitNetwork,
   useAppKitProvider,
   useAppKitState,
@@ -8,7 +9,7 @@ import {
 import { createAppKit } from "@reown/appkit/vue";
 import { EthersAdapter } from "@reown/appkit-adapter-ethers";
 import { bscTestnet, bsc } from "@reown/appkit/networks";
-import {isAddress, BrowserProvider, JsonRpcProvider } from "ethers";
+import { isAddress, BrowserProvider, JsonRpcProvider } from "ethers";
 
 import type { ContractRunner } from "ethers";
 
@@ -44,7 +45,7 @@ const projectId = "16ad44652fb08a15a5641b277dce355c";
 
 const metadata = {
   name: "RUBR",
-  description: "AppKit Example",
+  description: "RUBR Service Coin",
   url: "http://localhost:3000", // origin must match your domain & subdomain
   icons: ["https://assets.reown.com/reown-profile-pic.png"],
 };
@@ -105,10 +106,10 @@ export const useWeb3Store = defineStore("web3Store", () => {
   const explorerTxUrl = (tx: string | Ref<string>) =>
     unref(blockExplorer) && unref(tx)
       ? `${unref(blockExplorer)}/tx/${unref(tx)}`
-      : undefined;    
+      : undefined;
 
   const init = async () => {
-    await appKit.ready()
+    await appKit.ready();
     const { walletProvider } = useAppKitProvider<Provider>("eip155");
 
     if (walletProvider) {
@@ -134,7 +135,12 @@ export const useWeb3Store = defineStore("web3Store", () => {
     addresses.value = getAddresses(networkData.value.chainId);
   };
 
-  const ready = async () => await appKit.ready()
+  const openConnectModal = () => {
+    const { open } = useAppKit();
+    open({ view: "Connect" });
+  };
+  
+  const ready = async () => await appKit.ready();
 
   init().then(() => {
     watch(state, async () => {
@@ -150,5 +156,6 @@ export const useWeb3Store = defineStore("web3Store", () => {
     explorerUrl,
     explorerTxUrl,
     isValidAddress,
+    openConnectModal,
   };
 });

@@ -48,49 +48,28 @@ const execute = async () => {
     }
   }
 };
+const { disabled = false } = defineProps(['disabled'])
 </script>
 <template>
-  <Card
-    class="rounded-2xl mx-auto border border-surface-200 dark:border-surface-700 w-full shadow-none"
-  >
+  <Card class="card shadow-none">
     <template #title>
-      
-        <span class="text-sm">Transfer From</span>
-    
+
+      <span class="text-sm">Transfer From</span>
+
     </template>
     <template #content>
       <div class="flex flex-col  gap-2 text-sm">
-        
-          <InputAddress
-            :disabled="!contract || running"
-            v-model="addressFrom"
-            label="From (address)"
-            :invalid="invalidAddressFrom"
-          />
-          <InputAddress
-            :disabled="!contract || running"
-            v-model="addressTo"
-            label="To (address)"
-            :invalid="invalidAddressTo"
-          />
-          <InputAmount
-            class="lg:col-span-2 xl:col-span-1"
-            symbol="RUBR"
-            label="Amount"
-            v-model="amount"
-            :decimals="8"
-            :disabled="!contract || running"
-            :invalid="invalidAmount"
-          />
-        
+
+        <InputAddress :disabled="!contract || running || disabled" v-model="addressFrom" label="From (address)"
+          :invalid="invalidAddressFrom" />
+        <InputAddress :disabled="!contract || running || disabled" v-model="addressTo" label="To (address)"
+          :invalid="invalidAddressTo" />
+        <InputAmount class="lg:col-span-2 xl:col-span-1" symbol="RUBR" label="Amount" v-model="amount" :decimals="8"
+          :disabled="!contract || running || disabled" :invalid="invalidAmount" />
+
         <div class="flex justify-normal gap-x-4 gap-y-2 text-sm pt-2">
-          <DangerButton
-            class="min-w-32"
-            icon="pi pi-play"
-            label="Execute"
-            :loading="running"
-            @click="execute"
-          />
+          <DangerButton class="min-w-32" icon="pi pi-play" label="Execute" :loading="running"
+            :disabled="!contract || running || disabled" @click="execute" />
 
           <TransactionResult :value="txResult" />
         </div>

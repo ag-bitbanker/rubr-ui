@@ -4,10 +4,7 @@ import Card from "@/volt/Card.vue";
 import DangerButton from "@/volt/DangerButton.vue";
 import InputAmount from "~/components/InputAmount.vue";
 import TransactionResult from "@/components/TransactionResult.vue";
-import { useWeb3Store } from "@/stores/web3";
 import { useRubrStore } from "@/stores/RUBR";
-
-const web3Store = useWeb3Store();
 const rubrStore = useRubrStore();
 const { redeem, updateTotalSupply } = rubrStore;
 const { contract } = storeToRefs(rubrStore);
@@ -37,6 +34,7 @@ const execute = async () => {
     }
   }
 };
+const { disabled = false } = defineProps(['disabled'])
 </script>
 <template>
   <Card
@@ -55,16 +53,17 @@ const execute = async () => {
             label="Amount"
             v-model="amount"
             :decimals="8"
-            :disabled="!contract || running"
+            :disabled="!contract || running || disabled"
             :invalid="invalidAmount"
           />
 
        
-        <div class="flex justify-normal gap-x-4 gap-y-2 text-sm pt-2">
+        <div class="flex justify-normal gap-x-4 gap-y-2 pt-2">
           <DangerButton
             class="min-w-32"
             icon="pi pi-play"
             label="Execute"
+             :disabled="!contract || running || disabled"
             :loading="running"
             @click="execute"
           />

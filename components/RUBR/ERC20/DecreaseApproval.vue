@@ -22,6 +22,7 @@ const decimals = ref(8);
 const numerator = BigInt(10) ** BigInt(unref(decimals));
 const denominator = BigInt(10) ** BigInt(18);
 const txResult = ref();
+
 const validate = () => {
   invalidAddress.value = !isValidAddress(unref(address));
   invalidAmount.value = isNaN(unref(amount)) || unref(amount) <= 0;
@@ -41,9 +42,10 @@ const execute = async () => {
     }
   }
 };
+const { disabled = false } = defineProps(['disabled'])
 </script>
 <template>
-  <Card class="rounded-2xl mx-auto border border-surface-200 dark:border-surface-700 w-full shadow-none">
+  <Card class="card shadow-none">
     <template #title>
 
       <span class="text-sm">Decrease Approval</span>
@@ -52,13 +54,14 @@ const execute = async () => {
     <template #content>
       <div class="flex flex-col gap-2 text-sm">
 
-        <InputAddress :disabled="!contract || running" v-model="address" label="Spender (address)"
+        <InputAddress :disabled="!contract || running || disabled" v-model="address" label="Spender (address)"
           :invalid="invalidAddress" />
         <InputAmount symbol="RUBR" label="Substracted amount" v-model="amount" :decimals="8"
-          :disabled="!contract || running" :invalid="invalidAmount" />
+          :disabled="!contract || running || disabled" :invalid="invalidAmount" />
 
         <div class="flex justify-normal gap-x-4 gap-y-2 text-sm pt-2">
-          <DangerButton class="min-w-32" icon="pi pi-play" label="Execute" :loading="running" @click="execute" />
+          <DangerButton class="min-w-32" icon="pi pi-play" label="Execute" :loading="running" @click="execute"
+            :disabled="!contract || running || disabled" />
 
           <TransactionResult :value="txResult" />
         </div>

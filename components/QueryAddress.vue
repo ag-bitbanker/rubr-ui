@@ -3,6 +3,7 @@ import { useWeb3Store } from "@/stores/web3";
 import { useClipboard } from '@vueuse/core'
 import InputText from "@/volt/InputText.vue";
 import SecondaryButton from "@/volt/SecondaryButton.vue";
+import ContrastButton from "@/volt/SecondaryButton.vue";
 import Button from "@/volt/Button.vue";
 import Message from "@/volt/Message.vue";
 import { useWeb3AccountStore } from "@/stores/web3Account";
@@ -22,10 +23,10 @@ const emit = defineEmits(['query'])
         <div class="flex flex-row items-center justify-between">
             <label>{{ label }}</label>
             <div class="flex flex-row items-center">
-                <SecondaryButton v-if="account?.address" variant="text" label="My wallet" size="small"
-                    @click="model = account.address" />
-                <SecondaryButton v-if="addresses?.treasury" variant="text" label="Treasury" size="small"
-                    @click="model = addresses.treasury" />
+                <Button v-if="account?.address" variant="text" pt:root:class="p-small:p-small:py-[0.175rem]"
+                    label="My wallet" size="small" @click="model = account.address" />
+                <ContrastButton v-if="addresses?.treasury" variant="text" pt:root:class="p-small:p-small:py-[0.175rem]"
+                    label="Treasury" size="small" @click="model = addresses.treasury" />
             </div>
         </div>
         <div class="flex items-stretch flex-auto">

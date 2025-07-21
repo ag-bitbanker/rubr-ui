@@ -37,8 +37,7 @@ const update = async () => {
 </script>
 
 <template>
-    
-         <Card class="rounded-2xl mx-auto border border-surface-200 dark:border-surface-700 w-full shadow-none">
+         <Card class="card shadow-none">
             <template #title>
                 <div class="flex justify-between items-center gap-2 text-sm">
                     <span>Allowance</span>

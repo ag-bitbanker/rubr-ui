@@ -5,11 +5,9 @@ import RUBR from "@/components/RUBR/index.vue";
 </script>
 
 <template>
-    <div class="grid gap-4">
-       
-         <Network/>
-         <Account/>
-          
-         <RUBR/> 
+    <div class="flex flex-col gap-4">
+        <Network />
+        <Account />
+        <RUBR />
     </div>
 </template>
