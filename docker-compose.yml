@@ -1,14 +1,14 @@
 services:
-  rubr-ui:
+  ui:
     build: .
     ports:
       - '3000:3000'
     restart: always
     networks:
-      - rubr-ui-network
+      - rubr-network
     environment:
-      - REOWN_PROJECT_ID=16ad44652fb08a15a5641b277dce355c
+      - REOWN_PROJECT_ID:16ad44652fb08a15a5641b277dce355c
 
 networks:
-  rubr-ui-network:
+  rubr-network:
     driver: bridge
