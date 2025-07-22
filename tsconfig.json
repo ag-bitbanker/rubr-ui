@@ -2,9 +2,9 @@
   // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./app",
     "paths": {
-      "@/volt/*": ["./volt/*/index.vue"]
+      "@/volt/*": ["app/volt/*/index.vue"]
     }
   }
 }

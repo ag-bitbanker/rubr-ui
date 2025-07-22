@@ -1,9 +1,7 @@
 FROM node:20.11-slim
-WORKDIR /src
+WORKDIR /usr/app
 COPY yarn.lock  package.json ./
 RUN yarn install
 COPY . .
 RUN yarn build
-ENV PORT=3000
-ENV NODE_ENV=production
 CMD [ "node", ".output/server/index.mjs" ]
