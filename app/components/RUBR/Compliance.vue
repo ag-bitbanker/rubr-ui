@@ -109,7 +109,7 @@ const disabled = computed(() => !unref(account)?.connected || !unref(account)?.r
      <template #title>
       <div class="flex justify-between items-center gap-2 pb-4 pt-2">
         <OverlayBadge
-:value="accountBadgeValue" :severity="accountBadgeSeverity" size="small" :class="accountBadgeClass"
+        :value="accountBadgeValue" :severity="accountBadgeSeverity" size="small" :class="accountBadgeClass"
           @click="connect">
          Protocol compliance</OverlayBadge>
 
@@ -117,13 +117,13 @@ const disabled = computed(() => !unref(account)?.connected || !unref(account)?.r
     </template>
     <template #content>
       <div class="flex flex-col gap-2">
-        <div class="flex flex-row">
+       
           <FrozenAddress
             v-model="address" :disabled="!contract || running" label="Address" class="w-full"
             :invalid="invalidAddress" :loading="running" :frozen="frozen" @query="_isFrozen"  />
-        </div>
-        <div class="flex flex-col gap-2 items-start xl:flex-row xl:items-center ">
-          <div class="flex flex-row gap-2 items-center">
+       
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-wrap gap-2">
             <DangerButton
               class="min-w-32" icon="pi pi-lock" label="Freeze" :loading="running"
               :disabled="frozen === undefined || running || disabled || !canFreeze" @click="_freeze" />

@@ -3,8 +3,8 @@ import Card from "@/volt/Card.vue";
 import SecondaryButton from "@/volt/SecondaryButton.vue";
 import Button from "@/volt/Button.vue";
 import DangerButton from "@/volt/DangerButton.vue";
-import SelectButton from '@/volt/SelectButton.vue';
 import OverlayBadge from '@/volt/OverlayBadge.vue';
+import Badge from '@/volt/Badge.vue';
 import TransactionResult from "@/components/TransactionResult.vue";
 import { useRubrStore } from "@/stores/RUBR";
 import { useWeb3Store } from "@/stores/web3";
@@ -43,8 +43,9 @@ const unpauseProtocol = async () => {
     }
   }
 };
-const state = computed(() => unref(paused) ? 'Paused' : 'Running')
-const options = ref(['Running', 'Paused']);
+const badgeValue = computed(() => unref(pausedLoading) ? '...' : unref(paused) ? 'Paused' : 'Running')
+const badgeSeverity = computed(() => unref(pausedLoading) ? 'secondary' : unref(paused) ? 'danger' : 'success')
+
 const accountBadgeValue = computed(() =>
   unref(account)?.connected ? (unref(account)?.roles?.pauser ? "Role granted" : "Forbidden") : "Connect wallet"
 );
@@ -67,34 +68,34 @@ const disabled = computed(() => !unref(account)?.connected || !unref(account)?.r
     <template #title>
       <div class="flex justify-between items-center gap-2 pb-4 pt-2">
         <OverlayBadge
-:value="accountBadgeValue" :severity="accountBadgeSeverity" size="small" :class="accountBadgeClass"
-          @click="connect">
+          :value="accountBadgeValue" :severity="accountBadgeSeverity" size="small"
+          :class="accountBadgeClass" @click="connect">
           Protocol pauser</OverlayBadge>
         <SecondaryButton
-icon="pi pi-refresh" size="small" :loading="pausedLoading" label="Refresh"
-          rounded @click="updatePaused" />
+          icon="pi pi-refresh" size="small" :loading="pausedLoading" label="Refresh" rounded
+          @click="updatePaused" />
       </div>
 
     </template>
-    <template #content>
-      <div class="flex flex-col gap-y-1">
-        <label>Protocol is</label>
-        <div class="flex flex-col md:flex-row text-sm gap-y-2 gap-x-4 items-start md:items-center justify-items-start">
-          <SelectButton v-model="state" :options="options" disabled />
-          <div v-if="!paused" class="flex grow justify-normal gap-x-4 gap-y-2 text-sm">
-            <DangerButton
-class="min-w-32" icon="pi pi-pause-circle" label="Pause" :loading="pauseRunning"
-              :disabled="disabled" @click="pauseProtocol" />
-          </div>
-          <div v-else class="flex justify-normal gap-x-4 gap-y-2 text-sm">
-            <Button
-class="min-w-32" icon="pi pi-play-circle" label="Resume" :loading="unpauseRunning"
-              :disabled="disabled" @click="unpauseProtocol" />
 
+    <template #content>
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-wrap text-sm gap-y-2 gap-x-4">
+          <div class="flex flex-row gap-2 items-center">
+            <div class="text-md">Protocol is</div>
+            <Badge :value="badgeValue" :severity="badgeSeverity" />
           </div>
-          <TransactionResult :value="txResult" />
+          <DangerButton 
+            class="min-w-32" icon="pi pi-pause-circle" label="Pause" :loading="pauseRunning"
+            :disabled="disabled || !paused" @click="pauseProtocol" />
+
+          <Button 
+              class="min-w-32" icon="pi pi-play-circle" label="Resume" :loading="unpauseRunning"
+            :disabled="disabled || paused" @click="unpauseProtocol" />
+
         </div>
 
+        <TransactionResult :value="txResult" />
       </div>
     </template>
   </Card>

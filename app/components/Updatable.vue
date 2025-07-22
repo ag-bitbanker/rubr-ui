@@ -3,7 +3,7 @@ import InputText from "@/volt/InputText.vue";
 import SecondaryButton from "@/volt/SecondaryButton.vue";
 
 const { value='', loading = false, disabled = false, label=''  } = defineProps({
-    value:String, 
+    value:[String,Number], 
     loading: Boolean, 
     disabled:Boolean, 
     label:String
