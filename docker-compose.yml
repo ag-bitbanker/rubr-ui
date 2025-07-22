@@ -6,9 +6,7 @@ services:
     restart: always
     networks:
       - rubr-network
-    environment:
-      - REOWN_PROJECT_ID:16ad44652fb08a15a5641b277dce355c
-
+      
 networks:
   rubr-network:
     driver: bridge

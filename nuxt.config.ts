@@ -19,7 +19,7 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            projectId: process.env.REOWN_PROJECT_ID
+            projectId: process.env.REOWN_PROJECT_ID || "16ad44652fb08a15a5641b277dce355c"
         }
     }
 });
