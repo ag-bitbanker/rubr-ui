@@ -47,10 +47,10 @@ const badgeValue = computed(() => unref(pausedLoading) ? '...' : unref(paused) ?
 const badgeSeverity = computed(() => unref(pausedLoading) ? 'secondary' : unref(paused) ? 'danger' : 'success')
 
 const accountBadgeValue = computed(() =>
-  unref(account)?.connected ? (unref(account)?.roles?.pauser ? "Role granted" : "Forbidden") : "Connect wallet"
+  unref(account)?.connected ? (unref(account)?.roles?.pauser ? "Role granted" : "Unauthorized") : "Connect wallet"
 );
 const accountBadgeSeverity = computed(() =>
-  unref(account)?.connected && unref(account)?.roles?.pauser ? "success" : "warn"
+  unref(account)?.connected && unref(account)?.roles?.pauser ? "success" : "danger"
 );
 const accountBadgeClass = computed(() =>
   unref(account)?.connected ? 'translate-y-[-75%] whitespace-nowrap' : 'cursor-pointer translate-y-[-75%] whitespace-nowrap'
@@ -67,12 +67,10 @@ const disabled = computed(() => !unref(account)?.connected || !unref(account)?.r
   <Card class="card-2" pt:body:class="px-0 pb-0 md:px-5 md:pb-5">
     <template #title>
       <div class="flex justify-between items-center gap-2 pb-4 pt-2">
-        <OverlayBadge
-          :value="accountBadgeValue" :severity="accountBadgeSeverity" size="small"
+        <OverlayBadge :value="accountBadgeValue" :severity="accountBadgeSeverity" size="small"
           :class="accountBadgeClass" @click="connect">
           Protocol pauser</OverlayBadge>
-        <SecondaryButton
-          icon="pi pi-refresh" size="small" :loading="pausedLoading" label="Refresh" rounded
+        <SecondaryButton icon="pi pi-refresh" size="small" :loading="pausedLoading" label="Refresh" rounded
           @click="updatePaused" />
       </div>
 
@@ -80,19 +78,20 @@ const disabled = computed(() => !unref(account)?.connected || !unref(account)?.r
 
     <template #content>
       <div class="flex flex-col gap-4">
-        <div class="flex flex-wrap text-sm gap-y-2 gap-x-4">
+        <div class="flex flex-wrap flex-col text-sm gap-4">
           <div class="flex flex-row gap-2 items-center">
-            <div class="text-md">Protocol is</div>
+            <div>Protocol status:</div>
             <Badge :value="badgeValue" :severity="badgeSeverity" />
           </div>
-          <DangerButton 
-            class="min-w-32" icon="pi pi-pause-circle" label="Pause" :loading="pauseRunning"
-            :disabled="disabled || !paused" @click="pauseProtocol" />
+          <div class="flex flex-wrap text-sm gap-y-2 gap-x-4 items-center">
+            <DangerButton 
+              class="min-w-32" icon="pi pi-pause-circle" label="Pause" :loading="pauseRunning"
+              :disabled="disabled || !paused" @click="pauseProtocol" />
 
-          <Button 
+            <Button 
               class="min-w-32" icon="pi pi-play-circle" label="Resume" :loading="unpauseRunning"
-            :disabled="disabled || paused" @click="unpauseProtocol" />
-
+              :disabled="disabled || paused" @click="unpauseProtocol" />
+          </div>
         </div>
 
         <TransactionResult :value="txResult" />

@@ -4,6 +4,7 @@ import { useClipboard } from '@vueuse/core'
 import InputText from "@/volt/InputText.vue";
 import SecondaryButton from "@/volt/SecondaryButton.vue";
 import Button from "@/volt/Button.vue";
+import Badge from "@/volt/Badge.vue";
 import Message from "@/volt/Message.vue";
 import { useWeb3AccountStore } from "@/stores/web3Account";
 const web3AccountStore = useWeb3AccountStore();
@@ -32,7 +33,11 @@ const icon = computed(() => {
 <template>
     <div class="flex flex-col">
         <div class="flex flex-row items-center justify-between">
-            <label>{{ label }}</label>
+            <div class="flex flex-row items-center gap-2">
+                <label>{{ label }}</label>
+                <Badge v-if="frozen===false" value="Not frozen" severity="success" size="small"/>
+                <Badge v-else-if="frozen===true" value="Frozen" severity="danger" size="small"/>
+            </div>
             <div class="flex flex-row items-center">
                 <Button 
                     v-if="account?.address" variant="text" pt:root:class="p-small:p-small:py-[0.175rem]"
@@ -71,9 +76,6 @@ const icon = computed(() => {
 
         </div>
         <Message v-if="invalid" size="small" severity="error" variant="simple">Invalid address</Message>
-        <Message v-else-if="frozen === true" size="small" severity="error" variant="simple">Address is frozen</Message>
-        <Message v-else-if="frozen === false" size="small" severity="success" variant="simple">Address is not frozen
-        </Message>
-
+ 
     </div>
 </template>

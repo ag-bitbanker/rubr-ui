@@ -16,10 +16,10 @@ const { account } = storeToRefs(web3AccountStore);
 const { openConnectModal } = web3Store;
 
 const accountBadgeValue = computed(() =>
-  unref(account)?.connected ? (unref(account)?.roles?.supplier ? "Role granted" : "Forbidden") : "Connect wallet"
+  unref(account)?.connected ? (unref(account)?.roles?.supplier ? "Role granted" : "Unauthorized") : "Connect wallet"
 );
 const accountBadgeSeverity = computed(() =>
-  unref(account)?.connected && unref(account)?.roles?.supplier ? "success" : "warn"
+  unref(account)?.connected && unref(account)?.roles?.supplier ? "success" : "danger"
 );
 const accountBadgeClass = computed(() =>
   unref(account)?.connected ? 'translate-y-[-75%] whitespace-nowrap' : 'cursor-pointer translate-y-[-75%] whitespace-nowrap'

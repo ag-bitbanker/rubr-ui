@@ -87,10 +87,10 @@ const canUnfreeze = computed(() => frozen?.value === true)
 const canWipe = computed(() => frozen?.value === true)
 
 const accountBadgeValue = computed(() =>
-  unref(account)?.connected ? (unref(account)?.roles?.compliance ? "Role granted" : "Forbidden") : "Connect wallet"
+  unref(account)?.connected ? (unref(account)?.roles?.compliance ? "Role granted" : "Unauthorized") : "Connect wallet"
 );
 const accountBadgeSeverity = computed(() =>
-  unref(account)?.connected && unref(account)?.roles?.compliance ? "success" : "warn"
+  unref(account)?.connected && unref(account)?.roles?.compliance ? "success" : "danger"
 );
 const accountBadgeClass = computed(() =>
   unref(account)?.connected ? 'translate-y-[-75%] whitespace-nowrap' : 'cursor-pointer translate-y-[-75%] whitespace-nowrap'
@@ -116,7 +116,7 @@ const disabled = computed(() => !unref(account)?.connected || !unref(account)?.r
       </div>
     </template>
     <template #content>
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-4">
        
           <FrozenAddress
             v-model="address" :disabled="!contract || running" label="Address" class="w-full"

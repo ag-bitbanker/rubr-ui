@@ -38,10 +38,10 @@ const accountBadgeClass = computed(() =>
 );
 
 const roles = computed(() => ([
-    { name: 'Admin role', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.admin },
-    { name: 'Pauser role', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.pauser },
-    { name: 'Supplier role', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.supplier },
-    { name: 'Compliance role', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.compliance },
+    { name: 'Admin', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.admin },
+    { name: 'Pauser', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.pauser },
+    { name: 'Supplier', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.supplier },
+    { name: 'Compliance', status: unref(accountRolesLoading) ? undefined : unref(account)?.roles?.compliance },
 ])
 )
 const roleBadgeSeverity = (roleGranted) => {
@@ -51,7 +51,7 @@ const roleBadgeSeverity = (roleGranted) => {
 }
 const roleBadgeLabel = (roleGranted) => {
     if (roleGranted === true) return 'Granted';
-    if (roleGranted === false) return 'Not granted';
+    if (roleGranted === false) return 'Unauthorized';
     return 'Unknown'
 }
 const connect = () => {
@@ -97,7 +97,7 @@ icon="pi pi-refresh" size="small" :loading="accountRolesLoading"
                     <template #content>
                         <DataTable :value="roles">
                             <Column field="name" header="Role"/>
-                            <Column field="status" header="Status">
+                            <Column field="status" header="Access">
                                 <template #body="slotProps">
                                     <Badge
 :value="roleBadgeLabel(slotProps.data.status)"
